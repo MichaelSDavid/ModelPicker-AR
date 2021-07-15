@@ -63,7 +63,6 @@ struct ARViewContainer: UIViewRepresentable {
         arView.session.run(config)
         
         return arView
-        
     }
     
     func updateUIView(_ uiView: ARView, context: Context) {
@@ -72,11 +71,12 @@ struct ARViewContainer: UIViewRepresentable {
                 print("DEBUG - adding model to scene: \(model.modelName)")
                 
                 let anchorEntity = AnchorEntity(plane: .any)
-                anchorEntity.addChild(modelEntity)
+                anchorEntity.addChild(modelEntity.clone(recursive: true))
                 
                 uiView.scene.addAnchor(anchorEntity)
+            } else {
+                print("DEBUG - unable to load modelEntity for: \(model.modelName)")
             }
-            
             
             DispatchQueue.main.async {
                 self.modelConfirmedForPlacement = nil
